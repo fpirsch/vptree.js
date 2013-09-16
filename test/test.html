@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vptree.js test suite</title>
+
+<link rel="stylesheet" href="qunit-1.12.0.css">
+<script src="qunit-1.12.0.js"></script>
+<script src="../vptree.min.js"></script>
+<script src="vptree-select-test.js"></script>
+<script src="vptree-test.js"></script>
+<script type="text/javascript">
+
+	function infComparator(a, b) { return a < b; }
+
+	test("SingleElementTest", singleElementTest);
+	test("MSDN test", MSDNTest);
+
+	module("GCC Standard Library nth_element test suite");
+	test("1.cc", function() {
+		test3();
+		test4();
+	});
+	test("2.cc", test01);		// this test takes most of the time
+	test("3.cc", test05);
+
+	module("Search test, no buckets");
+	test("Find existing elements", searchTest.searchElements);
+	test("Find 1 nearest element", searchTest.searchNearestOne);
+	test("Find 2 nearest elements", searchTest.searchNearestTwo);
+	test("Find 3 nearest elements", searchTest.searchNearestThree);
+
+	module("Search test, bucket size = 5");
+	test("Find existing elements", searchTest.searchElementsB);
+	test("Find 1 nearest element", searchTest.searchNearestOneB);
+	test("Find 2 nearest elements", searchTest.searchNearestTwoB);
+	test("Find 3 nearest elements", searchTest.searchNearestThreeB);
+
+	module("stringify/load test");
+	test("Find existing elements", searchTest.searchElementsS);
+	test("Find 1 nearest element", searchTest.searchNearestOneS);
+	test("Find 2 nearest elements", searchTest.searchNearestTwoS);
+	test("Find 3 nearest elements", searchTest.searchNearestThreeS);
+
+	module("stringify/load test, bucket size = 5");
+	test("Find existing elements", searchTest.searchElementsBS);
+	test("Find 1 nearest element", searchTest.searchNearestOneBS);
+	test("Find 2 nearest elements", searchTest.searchNearestTwoBS);
+	test("Find 3 nearest elements", searchTest.searchNearestThreeBS);
+
+
+</script>
+</head>
+<body>
+	<div id="qunit"></div>
+</body>
+</html>
