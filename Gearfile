@@ -1,0 +1,10 @@
+// Gearfile
+{
+    start:         {task: ['log', 'Building...']},
+    js:            {task: ['read', ['src/intro.js', 'src/vptree-build.js', 'src/vptree-search.js', 'src/vptree-constructor.js', 'src/end.js']]},
+    js_concat:     {requires: 'js', task: 'concat'},
+    js_write:      {requires: 'js_concat', task: ['write', 'vptree.js']},
+    js_min:        {requires: 'js_write', task: 'jsminify'},
+    js_write_min:  {requires: 'js_min', task: ['write', 'vptree.min.js']},
+    end:           {requires: 'js_write_min', task: ['log', 'Done.']}
+}
