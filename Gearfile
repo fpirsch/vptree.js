@@ -1,10 +1,20 @@
 // Gearfile
-{
-    start:         {task: ['log', 'Building...']},
-    js:            {task: ['read', ['src/intro.js', 'src/vptree-build.js', 'src/vptree-search.js', 'src/vptree-constructor.js', 'src/end.js']]},
-    js_concat:     {requires: 'js', task: 'concat'},
-    js_write:      {requires: 'js_concat', task: ['write', 'vptree.js']},
-    js_min:        {requires: 'js_write', task: 'jsminify'},
-    js_write_min:  {requires: 'js_min', task: ['write', 'vptree.min.js']},
-    end:           {requires: 'js_write_min', task: ['log', 'Done.']}
-}
+(function() {
+	function prepend(blob) {
+		return new blob.constructor([
+			'/* vptree.js | https://github.com/fpirsch/vptree.js | ISC Licence. François Pirsch. 2013.\n*/\n',
+			blob
+		]);
+	}
+
+	return {
+	    start:         {task: ['log', 'Building...']},
+	    js:            {task: ['read', ['src/intro.js', 'src/vptree-build.js', 'src/vptree-search.js', 'src/vptree-constructor.js', 'src/end.js']]},
+	    js_concat:     {requires: 'js', task: 'concat'},
+	    js_write:      {requires: 'js_concat', task: ['write', 'vptree.js']},
+	    js_min:        {requires: 'js_write', task: 'jsminify'},
+	    prepend:       {requires: 'js_min', task: ['concat', { callback: prepend }]},
+	    js_write_min:  {requires: 'prepend', task: ['write', 'vptree.min.js']},
+	    end:           {requires: 'js_write_min', task: ['log', 'Done.']}
+	}
+}());
