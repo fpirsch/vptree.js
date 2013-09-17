@@ -98,7 +98,7 @@
 	 * Builds and returns a vp-tree from the list S.
 	 * @param {Array} S array of objects to structure into a vp-tree.
 	 * @param {function} distance a function returning the distance between 2 ojects from the list S.
-	 * @param {number} nb (maximum) bucket size. 0 or undefined = no buckets used (default).
+	 * @param {number} nb (maximum) bucket size. 0 or undefined = no buckets used.
 	 * @return {object} vp-tree.
 	 */
 	function buildVPTree(S, distance, nb) {
