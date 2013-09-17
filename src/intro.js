@@ -1,13 +1,3 @@
-/*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
- *║                                                                                                         ║
- *║      vptree.js                                                                                          ║
- *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
- *║      https://github.com/fpirsch/vptree.js                                                               ║
- *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
- *║                                                                                                         ║
- *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
- */
-
 "use strict";
 
 //https://github.com/umdjs/umd/blob/master/commonjsStrictGlobal.js
