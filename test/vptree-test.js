@@ -59,7 +59,7 @@
 	function searchElements(vptree) {
 		var result;
 		for(var i = 0, n = S.length; i < n; i++) {
-			result = vptree.search(S[i], 1);
+			result = vptree.search(S[i]);
 			equal(result.length, 1, "point ["+S[i]+']');
 			equal(result[0], i);
 		}
@@ -72,7 +72,7 @@
 			var point = S[i],
 				x = point[0],
 				y = point[1],
-				result = vptree.search([x+0.1, y+0.4], 1);
+				result = vptree.search([x+0.1, y+0.4]);
 			equal(result.length, 1, "point ["+(x+0.1)+', '+(y+0.4)+']');
 			equal(result[0], i);
 		}
