@@ -70,6 +70,9 @@ This function returns a list of indexes in S, ordered from the closest to the fu
 
 ### Precomputing the tree
 
+Typical usage of this library involves large datasets or expensive distance computations. You will probably want to
+precompute the vp-tree structure, so that your final application does just the searching.
+
 **vptree.stringify()**
 
 Returns a stringified JavaScript object literal of the vp-tree structure. Like JSON.stringify but without nulls
