@@ -6,7 +6,7 @@
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2013-09-17T13:00Z                                                                            ║
+ *║      Date: 2013-09-17T13:58Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
@@ -312,11 +312,12 @@
 
 	/**
 	 * @param q query object
-	 * @param n number of nearest neighbors to find
+	 * @param n number of nearest neighbors to find (default = 1)
 	 *
 	 * @return list of indexes of the nearest neighbors.
 	 */
 	function searchVPTree(q, n) {
+		n = n || 1;
 		var W = new PriorityQueue(n),
 			τ = Infinity,
 			S = this.S,
