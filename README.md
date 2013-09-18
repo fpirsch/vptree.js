@@ -61,7 +61,7 @@ You will probably never use this function. However, it is used internally, and e
 
 **vptree.search(element[, n])**
 
-Searches the ```n``` nearest neighbors of ```element``` in S.
+Searches the **n** nearest neighbors of **element** in **S**.
 
 * **element** an object to search in S
 * **n** the number of closest elements to retrieve. Defaults to 1.
@@ -90,3 +90,9 @@ Reuses a precomputed stringified vp-tree, and returns a searchable VPTree instan
 * **distance** the distance function that was used to pre-build the vp-tree.
 * **tree** the vp-tree structure object. Must be a plain object.
 
+## About the distance function
+
+The vp-tree algorithm needs a real [metric](https://en.wikipedia.org/wiki/Metric_%28mathematics%29).
+In particular, the [squared euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance#Squared_Euclidean_distance)
+won't do the job because it does not satisfy the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality) :
+if you want to use the standard euclidean distance, don't forget the square root.
