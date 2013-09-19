@@ -1,20 +1,20 @@
-// Gearfile
+// Gearfile - gear v0.8.13 min
 (function() {
-	function prepend(blob) {
-		return new blob.constructor([
-			'/* vptree.js | https://github.com/fpirsch/vptree.js | ISC Licence. François Pirsch. 2013.\n*/\n',
-			blob
-		]);
-	}
+	var version = '0.1.0',
+		templateData = { version: version+'      ', date: new Date().toISOString().replace(/:\d+\.\d+Z/, 'Z') },
+		headerMin = '/* vptree.js v'+version+' | https://github.com/fpirsch/vptree.js | ISC Licence. François Pirsch. 2013.\n*/\n';
 
-	return {
-	    start:         {task: ['log', 'Building...']},
-	    js:            {task: ['read', ['src/intro.js', 'src/vptree-build.js', 'src/vptree-search.js', 'src/vptree-constructor.js', 'src/end.js']]},
-	    js_concat:     {requires: 'js', task: 'concat'},
-	    js_write:      {requires: 'js_concat', task: ['write', 'vptree.js']},
-	    js_min:        {requires: 'js_write', task: 'jsminify'},
-	    prepend:       {requires: 'js_min', task: ['concat', { callback: prepend }]},
-	    js_write_min:  {requires: 'prepend', task: ['write', 'vptree.min.js']},
-	    end:           {requires: 'js_write_min', task: ['log', 'Done.']}
-	}
+	new gear.Queue({registry: new gear.Registry({module: 'gear-lib'})})
+		.log('Building...')
+		.read('src/header.js')
+		.handlebars(templateData)
+		.read(['src/intro.js', 'src/vptree-build.js', 'src/vptree-search.js', 'src/vptree-constructor.js', 'src/end.js'])
+		.concat()
+		.write('vptree.js')
+		.jsminify()
+		.prepend(headerMin)
+		.concat()
+		.write('vptree.min.js')
+		.log('Done !')
+		.run();
 }());
