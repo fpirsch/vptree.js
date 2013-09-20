@@ -1,10 +1,10 @@
-// Gearfile - gear v0.8.13 min
+// Gearfile - gear v0.8.14 min
 (function() {
 	var version = '0.1.0',
 		templateData = { version: version+'      ', date: new Date().toISOString().replace(/:\d+\.\d+Z/, 'Z') },
 		headerMin = '/* vptree.js v'+version+' | https://github.com/fpirsch/vptree.js | ISC Licence. François Pirsch. 2013.\n*/\n';
 
-	new gear.Queue({registry: new gear.Registry({module: 'gear-lib'})})
+	new gear.Queue({registry: 'gear-lib'})
 		.log('Building...')
 		.read('src/header.js')
 		.handlebars(templateData)
