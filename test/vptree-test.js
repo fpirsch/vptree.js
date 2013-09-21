@@ -55,13 +55,18 @@
 		vptreeb2 = VPTreeFactory.load(S, EUCLIDEAN2, stringifiedb);
 	}
 
+	function approxEqual(actualResult, expectedIndex, expectedDistance) {
+		equal(actualResult.i, expectedIndex);
+		ok( Math.abs(actualResult.d - expectedDistance) < 1e-10, actualResult.d+" pour "+expectedDistance+" attendu");
+	}
+
 	// Search elements that are known to be present in the set.
 	function searchElements(vptree) {
 		var result;
 		for(var i = 0, n = S.length; i < n; i++) {
 			result = vptree.search(S[i]);
 			equal(result.length, 1, "point ["+S[i]+']');
-			equal(result[0], i);
+			approxEqual(result[0], i, 0);
 		}
 	}
 
@@ -74,29 +79,37 @@
 				y = point[1],
 				result = vptree.search([x+0.1, y+0.4]);
 			equal(result.length, 1, "point ["+(x+0.1)+', '+(y+0.4)+']');
-			equal(result[0], i);
+			approxEqual(result[0], i, 0.41231056256176607);
 		}
 	}
 
 	// Search the 2 elements nearest to one that is known not to be present in the set.
 	function searchNearestTwo(vptree) {
-		var x, y, i = 0, result, expected;
+		var x, y, i = 0, result, expected, expectedDistance;
 		for(x = 0; x < gridSize; x++) {
 			for(y = 0; y < gridSize; y++) {
 				result = vptree.search([x+0.1, y+0.4], 2);
 				equal(result.length, 2, "point ["+(x+0.1)+', '+(y+0.4)+']');
-				equal(result[0], i);
+				approxEqual(result[0], i, 0.41231056256176607);
+
 				// What second nearest element do we expect ?
 				// Inside the grid, it's the element just above i.
 				expected = i+1;
+				expectedDistance = 0.6082762530298219;
 				// But outside the grid ?
 				if(y === gridSize-1) {
 					// Above the grid, it's the element on the right of i.
-					if(x < gridSize-1) expected = i + gridSize;
+					if(x < gridSize-1) {
+						expected = i + gridSize;
+						expectedDistance = 0.9848857801796105;
+					}
 					// Outside the right corner, it's the element on the left of i.
-					else expected = i - gridSize;
+					else {
+						expected = i - gridSize;
+						expectedDistance = 1.1704699910719625;
+					}
 				}
-				equal(result[1], expected);
+				approxEqual(result[1], expected, expectedDistance);
 				i++;
 			}
 		}
@@ -104,40 +117,60 @@
 
 	// Search the 3 elements nearest to one that is known not to be present in the set.
 	function searchNearestThree(vptree) {
-		var x, y, i = 0, result, expected;
+		var x, y, i = 0, result, expected, expectedDistance;
 		for(x = 0; x < gridSize; x++) {
 			for(y = 0; y < gridSize; y++) {
 				result = vptree.search([x+0.1, y+0.4], 3);
 				equal(result.length, 3, "point ["+(x+0.1)+', '+(y+0.4)+']');
-				equal(result[0], i);
+				approxEqual(result[0], i, 0.41231056256176607);
 
 				// What second nearest element do we expect ?
 				// Inside the grid, it's the element just above i.
 				expected = i+1;
+				expectedDistance = 0.6082762530298219;
 				// But outside the grid ?
 				if(y === gridSize-1) {
 					// Above the grid, it's the element on the right of i.
-					if(x < gridSize-1) expected = i + gridSize;
+					if(x < gridSize-1) {
+						expected = i + gridSize;
+						expectedDistance = 0.9848857801796105;
+					}
 					// Outside the right corner, it's the element on the left of i.
-					else expected = i - gridSize;
+					else {
+						expected = i - gridSize;
+						expectedDistance = 1.1704699910719625;
+					}
 				}
-				equal(result[1], expected);
+				approxEqual(result[1], expected, expectedDistance);
 
 				// What third nearest element do we expect ?
 				// Inside the grid, it's the element on the right of i.
 				expected = i + gridSize;
+					expectedDistance = 0.9848857801796105;
 				// Above the top-left and top-right corners, it's the point below i.
-				if(i === gridSize-1 || i === gridSize*gridSize-1) expected = i-1;
+				if(i === gridSize-1 || i === gridSize*gridSize-1) {
+					expected = i-1;
+					expectedDistance = 1.40356688476182;
+				}
 				// For all the other points outside the grid, it's the point on le left of i.
-				else if(x === gridSize-1 || y === gridSize-1) expected = i - gridSize;
-				equal(result[2], expected);
-
+				else if(x === gridSize-1 || y === gridSize-1) {
+					expected = i - gridSize;
+					expectedDistance = 1.1704699910719625;
+				}
+				approxEqual(result[2], expected, expectedDistance);
 				i++;
 			}
 		}
 	}
 
-
+	// Tests that stringify() output is correct for small buckets.
+	// Which is totally useless. But should work all the same.
+	function stringifyTest() {
+		var vptree = VPTreeFactory.build([[0,0], [1,1]], EUCLIDEAN2, 10),
+			str = vptree.stringify(),
+			expected = JSON.stringify(vptree.tree);		// should be a simple array.
+		equal(str, expected);
+	}
 
 	buildTrees();
 
@@ -153,6 +186,9 @@
 		searchNearestOneB: function() { searchNearestOne(vptreeb); },
 		searchNearestTwoB: function() { searchNearestTwo(vptreeb); },
 		searchNearestThreeB: function() { searchNearestThree(vptreeb); },
+
+		// Stringify
+		stringifyTest: stringifyTest,
 
 		// Stringified and reloaded vptree, no buckets
 		searchElementsS: function() { searchElements(vptree2); },
