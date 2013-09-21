@@ -1,12 +1,12 @@
 /*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
  *║                                                                                                         ║
- *║      vptree.js v0.1.0                                                                                   ║
+ *║      vptree.js v0.1.1                                                                                   ║
  *║      https://github.com/fpirsch/vptree.js                                                               ║
  *║                                                                                                         ║
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2013-09-17T13:58Z                                                                            ║
+ *║      Date: 2013-09-21T20:03Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
@@ -127,7 +127,7 @@
 	 * Builds and returns a vp-tree from the list S.
 	 * @param {Array} S array of objects to structure into a vp-tree.
 	 * @param {function} distance a function returning the distance between 2 ojects from the list S.
-	 * @param {number} nb (maximum) bucket size. 0 or undefined = no buckets used (default).
+	 * @param {number} nb (maximum) bucket size. 0 or undefined = no buckets used.
 	 * @return {object} vp-tree.
 	 */
 	function buildVPTree(S, distance, nb) {
@@ -205,6 +205,10 @@
 		var stack = [root || this.tree], s = '';
 		while(stack.length) {
 			var node = stack.pop();
+
+			// Happens if the bucket size is greater thant the dataset.
+			if(node.length) return '['+node.join(',')+']';
+
 			s += '{i:' + node.i;
 			if(node.hasOwnProperty('m')) {
 				s += ',m:' + node.m + ',M:' + node.M + ',μ:' + node.μ;
@@ -298,7 +302,7 @@
 			},
 
 			list: function() {
-				return contents.map(function(item){ return item.data; });
+				return contents.map(function(item){ return {i: item.data, d: item.priority}; });
 			}
 		};
 
@@ -311,10 +315,12 @@
 	 └───────────────────────────────────────────────────────────────────────────*/
 
 	/**
-	 * @param q query object
-	 * @param n number of nearest neighbors to find (default = 1)
+	 * @param {Object} q query : any object the distance function can be applied to.
+	 * @param {number} n number of nearest neighbors to find (default = 1)
 	 *
-	 * @return list of indexes of the nearest neighbors.
+	 * @return {Array<Object>} list of search results, ordered by increasing distance to the query object.
+	 *						Each result has a property i which is the index of the element in S, and d which
+	 *						is its distance to the query object.
 	 */
 	function searchVPTree(q, n) {
 		n = n || 1;
