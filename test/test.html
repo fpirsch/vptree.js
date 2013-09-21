@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="qunit-1.12.0.css">
 <script src="qunit-1.12.0.js"></script>
-<script src="../vptree.min.js"></script>
+<script src="../vptree.js"></script>
 <script src="vptree-select-test.js"></script>
 <script src="vptree-test.js"></script>
 <script type="text/javascript">
@@ -37,6 +37,7 @@
 	test("Find 3 nearest elements", searchTest.searchNearestThreeB);
 
 	module("stringify/load test");
+	test("stringify output with buckets smaller thant dataset", searchTest.stringifyTest);
 	test("Find existing elements", searchTest.searchElementsS);
 	test("Find 1 nearest element", searchTest.searchNearestOneS);
 	test("Find 2 nearest elements", searchTest.searchNearestTwoS);
@@ -47,7 +48,6 @@
 	test("Find 1 nearest element", searchTest.searchNearestOneBS);
 	test("Find 2 nearest elements", searchTest.searchNearestTwoBS);
 	test("Find 3 nearest elements", searchTest.searchNearestThreeBS);
-
 
 </script>
 </head>
