@@ -176,6 +176,10 @@
 		var stack = [root || this.tree], s = '';
 		while(stack.length) {
 			var node = stack.pop();
+
+			// Happens if the bucket size is greater thant the dataset.
+			if(node.length) return '['+node.join(',')+']';
+
 			s += '{i:' + node.i;
 			if(node.hasOwnProperty('m')) {
 				s += ',m:' + node.m + ',M:' + node.M + ',μ:' + node.μ;
