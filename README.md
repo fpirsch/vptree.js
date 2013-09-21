@@ -25,10 +25,12 @@ var stringList = [
 ];
 
 // building the tree
-var vptree = VPTreeFactory.build(stringList, levenshteinDistance);
+vptree = VPTreeFactory.build(stringList, levenshteinDistance);
 
-var nearest = vptree.search('democratic');  // equals 1
-alert( stringList[nearest] );               // alerts 'democracy'
+nearest = vptree.search('democratic');	// [{"i":1,"d":3}]
+index = nearest[0].i;			// index of nearest element is 1
+distance = nearest[0].d;		// distance of nearest element is 3
+alert( stringList[index] );		// alerts 'democracy'
 ```
 
 ## API
@@ -66,7 +68,10 @@ Searches the **n** nearest neighbors of **element** in **S**.
 * **element** an object to search in S
 * **n** the number of closest elements to retrieve. Defaults to 1.
 
-This function returns a list of indexes in S, ordered from the closest to the furthest.
+This function returns the list of the **n** nearest elements found, ordered from the closest to the furthest.
+Each item in the list is an object with 2 properties :
+* **i** the index of the element in S
+* **d** its distance to the query element
 
 ### Precomputing the tree
 
