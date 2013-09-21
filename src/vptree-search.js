@@ -56,7 +56,7 @@
 			},
 
 			list: function() {
-				return contents.map(function(item){ return item.data; });
+				return contents.map(function(item){ return {i: item.data, d: item.priority}; });
 			}
 		};
 
@@ -69,10 +69,12 @@
 	 └───────────────────────────────────────────────────────────────────────────*/
 
 	/**
-	 * @param q query object
-	 * @param n number of nearest neighbors to find (default = 1)
+	 * @param {Object} q query : any object the distance function can be applied to.
+	 * @param {number} n number of nearest neighbors to find (default = 1)
 	 *
-	 * @return list of indexes of the nearest neighbors.
+	 * @return {Array<Object>} list of search results, ordered by increasing distance to the query object.
+	 *						Each result has a property i which is the index of the element in S, and d which
+	 *						is its distance to the query object.
 	 */
 	function searchVPTree(q, n) {
 		n = n || 1;
