@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vp-tree search demo</title>
+<link rel="stylesheet" href="stylesheets/search-cities.css" media="all" />
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="scripts/cities.js"></script>
+<script src="scripts/geo.js"></script>
+<script src="scripts/vptree.min.js"></script>
+<script src="scripts/cities_vptree10.js"></script>
+<script>
+$(function() {
+	// "uncompress" city data
+	var cityNames = cities.names.split(',');
+	cities.names = null;
+	var totalCities = cityNames.length;
+	var coordList = cities.coords, cityCoords = [];
+	for(var i = 0, j = 0; i < totalCities; i++) {
+		cityCoords[i] = [coordList[j++]/1000, coordList[j++]/1000];
+	}
+
+	// Computes distance between cities in kilometers, with an accuracy of 100m.
+	function dist(a, b) {
+		var meters = Geo.distVincenty(a[0], a[1], b[0], b[1]);
+		return Math.round(meters/100)/10;
+	}
+
+	// rebuild the pre-computed vp-tree.
+	var vptree = VPTreeFactory.load(cityCoords, dist, treedata);
+
+	// Search nearest cities
+	function search() {
+		// Get search parameters.
+		var $resultLines = $('#resultlist>tbody>tr'),
+			howManyResults = $resultLines.length,
+			qlat = parseDMS('#qlat'),
+			qlon = parseDMS('#qlon');
+		if(isNaN(qlat) || isNaN(qlon)) return;
+
+		// The actual search, with performance measure.
+		var startTime = Date.now(),
+			searchResults = vptree.search([qlat, qlon], howManyResults),
+			searchTime = Date.now() - startTime;
+
+		// Display results
+		$('#comparisons').text(vptree.comparisons);
+		$('#searchtime').text(searchTime/1000);
+		$('#resultmeta').css('visibility', 'visible');
+
+		$resultLines.each(function(index) {
+			var found = searchResults[index],
+				cityId = found.i;
+			var $cells = $(this).children();
+			$cells.eq(1).text( found.d );
+			$cells.eq(2).text( cityNames[cityId] );
+			$cells.eq(3).text( cities.countries.substr(cityId*2, 2) );
+			$cells.eq(4).text( Geo.toLat(cityCoords[cityId][0]) );
+			$cells.eq(5).text( Geo.toLon(cityCoords[cityId][1]) );
+		});
+	}
+
+	// Helper function to parse coordinates.
+	function parseDMS(selector) {
+		var strval = $(selector).val();
+		if(!strval) $(selector).val( strval = $(selector).attr('placeholder') );
+		strval = strval.replace(/[^- 0-9.°\'′\"″NESW]/g, '');
+		$(selector).val(strval);
+		return Geo.parseDMS(strval);
+	}
+
+	// UI controls
+	$('.citycount').text(totalCities);
+	$('#search-button').click(search);
+
+	$('.suggestion').click(function(event) {
+		$('#qlat').val( $(this).attr('data-lat') );
+		$('#qlon').val( $(this).attr('data-lon') );
+		search();
+		event.preventDefault();
+	});
+
+	$('#more').click(function(event) {
+		var $tbody = $('#resultlist>tbody'),
+			$trs = $tbody.children(),
+			$tr = $trs.eq(0).clone();
+		$tr.children().empty().first().text( $trs.length + 1 );
+		$tbody.append($tr);
+		event.preventDefault();
+	});
+
+	$('#less').click(function(event) {
+		var $trs = $('#resultlist>tbody>tr');
+		if($trs.length > 1) {
+			$trs.last().remove();
+		}
+		event.preventDefault();
+	});
+
+});
+</script>
+</head>
+<body>
+	<div class="content">
+		<h1>vptree.js demo</h1>
+		This demo shows how the <a href="https://github.com/fpirsch/vptree.js">vp-tree algorithm</a> allows to search a huge database without actually comparing
+		all items to the query.<br/>
+		This database includes <span class="citycount"></span> random cities. Including more cities would not make the search really longer, but the
+		full database + vp-tree data would be more than 10 Mb.<br/>
+		A naïve algorithm would compare the query coordinates to each one of the <span class="citycount"></span> cities to find the closest. With a vp-tree, only
+		≈ 100 comparisons are needed.
+	</div>
+
+	<div id="form" class="content">
+		<h2>Search nearest cities by coordinates</h2><br>
+		<fieldset>
+			<label for="qlat">Latitude: </label><input type="text" id="qlat" placeholder="48.636028" />
+			<label for="qlon">Longitude: </label><input type="text" id="qlon" placeholder="-1.511393" />
+			<button id="search-button">Search</button><br/>
+		</fieldset>
+		<div class="caption">You can use decimal (-1.511393) or degree-minute-second-NESW (1° 30′ 41″ W) notations.</div>
+		<br/>
+		Suggestions :
+		<a href="#" class="suggestion" data-lat="90°N" data-lon="0°">North Pole</a>
+		<a href="#" class="suggestion" data-lat="90°S" data-lon="0°">South Pole</a>
+		<a href="#" class="suggestion" data-lat="48° 38′ 10″ N" data-lon="1° 30′ 41″ W">Mont Saint-Michel</a>
+		<a href="#" class="suggestion" data-lat="10° 46′ 58″ N" data-lon="79° 07′ 55″ E">Brihadeeswarar Temple</a>
+		<a href="#" class="suggestion" data-lat="03° 04′ 33″ S" data-lon="37° 21′ 12″ E">Kilimanjaro</a>
+	</div>
+
+	<div class="content">
+		<div id="resultmeta">
+			<span id="comparisons">0</span> distance comparisons (<span id="searchtime">0</span> s)
+		</div>
+		[<a href="#" id="more">more results</a>] [<a href="#" id="less">less results</a>]
+		<table id="resultlist">
+			<thead>
+				<tr><th>#</th><th>Distance (km)</th><th>Name</th><th>Country</th><th>Latitude</th><th>Longitude</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="content">
+		City data taken from <a href="http://www.maxmind.com/en/worldcities">Maxmind's Free World Cities Database</a>.<br/>
+		Distances are computed with <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">Movable Type Scripts' implementation of the Vincenty formula</a>.<br/>
+		The vp-tree was pre-computed with a bucket-size of 10 cities.
+	</div>
+</body>
+</html>
