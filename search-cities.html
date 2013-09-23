@@ -103,11 +103,11 @@ $(function() {
 <body>
 	<div class="content">
 		<h1>vptree.js demo</h1>
-		This demo shows how the <a href="https://github.com/fpirsch/vptree.js">vp-tree algorithm</a> allows to search a huge database without actually comparing
-		all items to the query.<br/>
-		This database includes <span class="citycount"></span> random cities. Including more cities would not make the search really longer, but the
-		full database + vp-tree data would be more than 10 Mb.<br/>
-		A naïve algorithm would compare the query coordinates to each one of the <span class="citycount"></span> cities to find the closest. With a vp-tree, only
+		This demo shows how the <a href="https://github.com/fpirsch/vptree.js">vp-tree algorithm</a> allows to search nearest neighbors in a huge database without actually
+		comparing all items to the query.<br/>
+		This database includes <span class="citycount">loading...</span> random cities. The size of the data is approximately 1.8 Mb. Including more cities would not make
+		the search really longer, but the full database + vp-tree data would take more than 100 Mb.<br/>
+		A naïve algorithm would compare the query coordinates to each one of the <span class="citycount">loading...</span> cities to find the closest. With a vp-tree, only
 		≈ 100 comparisons are needed.
 	</div>
 
@@ -148,9 +148,9 @@ $(function() {
 	</div>
 
 	<div class="content">
-		City data taken from <a href="http://www.maxmind.com/en/worldcities">Maxmind's Free World Cities Database</a>.<br/>
-		Distances are computed with <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">Movable Type Scripts' implementation of the Vincenty formula</a>.<br/>
-		The vp-tree was pre-computed with a bucket-size of 10 cities.
+		City data created by <a href="http://www.maxmind.com/">MaxMind</a> and available from their site.<br>
+		Distances are computed with <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">Movable Type Scripts' implementation of the Vincenty formula</a>.<br>
+		The vp-tree was pre-computed with a bucket-size of 10 cities.<br>
 	</div>
 </body>
 </html>
