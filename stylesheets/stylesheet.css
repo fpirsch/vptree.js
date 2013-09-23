@@ -477,3 +477,8 @@ footer a:hover {
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {}
+
+.float-left { float: left; }
+.right { overflow: hidden; }
+h4.right::before { margin-left: 0.2em; }
+p.right { padding-left: 1em; }
