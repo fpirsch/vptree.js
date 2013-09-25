@@ -1,7 +1,7 @@
 // geodesy scripts from Chris Veness
 // http://www.movable-type.co.uk/scripts/latlong.html
 // Very slightly modified for this demo.
-
+"use strict";
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  Geodesy representation conversion functions (c) Chris Veness 2002-2012                        */
@@ -91,7 +91,8 @@ Geo.toDMS = function(deg, format, dp) {
   }
   
   deg = Math.abs(deg);  // (unsigned result ready for appending compass dir'n)
-  
+  var dms;
+
   switch (format) {
     case 'd':
       d = deg.toFixed(dp);     // round degrees

@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Worldmap</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+<link rel="stylesheet" href="stylesheets/worldmap.min.css" media="all" />
+<script src="jquery-2.0.3.min.js"></script>
+<script src="scripts/cities.js"></script>
+<script src="scripts/geo.js"></script>
+<script src="scripts/vptree.min.js"></script>
+<script src="scripts/cities_vptree10.js"></script>
+<script src="scripts/worldmap.min.js"></script>
+</head>
+<body>
+    <header>
+      <div class="inner">
+        <h1>Vptree.js demo 2</h1>
+        <a href="/vptree.js/" class="button"><small>Back to the</small>Project home</a>
+      </div>
+    </header>
+
+	<div class="content" id="intro">
+		This demo shows how the <a href="https://github.com/fpirsch/vptree.js">vp-tree algorithm</a> allows to search nearest neighbors
+		in a huge database without actually comparing all items to the query.
+	</div>
+
+	<div class="title">Rotate and hover the globe</div>
+
+	<div class="content">
+		<canvas id="map" width="400" height="400"></canvas>
+	</div>
+
+	<div class="content">
+		<ul id="resultmeta">
+			<li>Latitude <span id="qlat"></span></li>
+			<li>Longitude <span id="qlon"></span></li>
+			<li><span id="comparisons">0</span> distance comparisons</li>
+		</ul>
+		<h3>Nearest cities</h3>
+		<table id="resultlist">
+			<thead>
+				<tr><th>#</th><th>Distance (km)</th><th>Name</th><th>Country</th><th>Latitude</th><th>Longitude</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+				<tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="content">
+		I know the blue lines representing the distances should be great circle arcs and not just straight lines. Maybe I will fix this, some day. The important thing
+		to note is that the distances are correctly computed with <a href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae">Vincenty's formula</a>.<br>
+		<br>
+		This database includes 51651 random cities. The size of the data is approximately 1.8 Mb. A naïve algorithm would compare the query coordinates to
+		each one of the 51651 cities to find the closest. With a vp-tree, only ≈ 100 comparisons are needed.<br>
+		<br>
+		All cities are displayed in 3D in real-time. JavaScript only (a <a href="https://en.wikipedia.org/wiki/Web_worker">web worker</a> is used). No plug-in,
+		not event <a href="https://fr.wikipedia.org/wiki/WebGL">WebGL</a>.<br>
+		City data created by <a href="http://www.maxmind.com/">MaxMind</a> and available from their site.<br>
+		Distances are computed with <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">Movable Type Scripts' implementation of the Vincenty formula</a>.<br>
+		The vp-tree was pre-computed with a bucket-size of 10 cities.<br>
+	</div>
+</body>
+</html>

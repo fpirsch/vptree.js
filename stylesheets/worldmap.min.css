@@ -1,0 +1,22 @@
+body{font-family:Georgia;color:#222222;}
+header{margin-bottom:2em;padding-bottom:20px;padding-top:20px;}
+header a.button{background:none;border:solid 2px white;border-radius:8px;padding:16px 0 0;width:198px;height:59px;text-align:center;}
+.content{max-width:940px;margin:auto;position:relative;margin-bottom:2em;}
+#resultlist{width:100%;border-collapse:collapse;}
+#resultlist thead tr{background-image:linear-gradient(to bottom, #ffffff 0%, #eeeeee 17%, #cccccc 100%);}
+#resultlist th,#resultlist td{border:solid 1px #808080;}
+#resultlist td{text-align:center;}
+#resultlist th:nth-child(3),#resultlist td:nth-child(3){text-align:left;padding-left:1em;}
+#resultlist th:nth-child(1){width:4%;}
+#resultlist th:nth-child(2){width:16%;}
+#resultlist th:nth-child(3){width:30%;}
+#resultlist th:nth-child(4){width:10%;}
+#resultlist th:nth-child(5){width:20%;}
+#resultlist th:nth-child(6){width:20%;}
+#intro{margin-bottom:0;}
+h3{font-family:'Architects Daughter',Georgia,'Helvetica Neue',Helvetica,Arial,serif;font-size:18px;font-weight:bold;color:#474747;}
+#map{background-image:url('../images/sphere.jpg');display:block;margin:auto;}
+#resultmeta{visibility:hidden;text-align:left;margin:0 0 0 100px;display:inline-block;}
+#resultmeta li{list-style:none;display:inline-block;width:13em;margin:0 1em;padding:0;}
+.title{max-width:940px;margin:0 auto 1em;text-align:center;font-weight:bold;margin-top:0;}
+#comparisons{display:inline-block;width:2em;text-align:right;}
