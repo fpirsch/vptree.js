@@ -1,4 +1,5 @@
 body{font-family:Georgia;color:#222222;}
+strong{font-weight:bold;}
 header{margin-bottom:2em;padding-bottom:20px;padding-top:20px;}
 header a.button{background:none;border:solid 2px white;border-radius:8px;padding:16px 0 0;width:198px;height:59px;text-align:center;}
 .content{max-width:940px;margin:auto;position:relative;margin-bottom:2em;}
