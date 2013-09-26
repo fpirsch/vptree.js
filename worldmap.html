@@ -24,12 +24,17 @@
 
 	<div class="content" id="intro">
 		This demo shows how the <a href="https://github.com/fpirsch/vptree.js">vp-tree algorithm</a> allows to search nearest neighbors
-		in a huge database without actually comparing all items to the query. <strong>Currently not working in IE and Opera.</strong>
+		in a huge database without actually comparing all items to the query.
 	</div>
 
 	<div class="title">
 		<h3>Rotate and hover the globe</h3>
-		There are 51651 dots on this globe, each one is a city.
+		There are 51651 dots on this globe, each one is a city.<br>
+		<script>
+			if(/Opera/.test(navigator.userAgent)) {
+				document.write('<strong>The globe is not working properly in Opera.</strong>');
+			}
+		</script>
 	</div>
 
 	<div class="content">

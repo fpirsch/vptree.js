@@ -6,8 +6,11 @@
  */
 "use strict";
 
-var state = 0;
-var X, Y, Z, x, y, z, matrix;
+var state = 0,
+	useTransferrable = true,
+	X, Y, Z,
+	x, y, z,
+	matrix;
 
 function projectVertices(X, Y, Z, x ,y ,z) {
 	var c0  = matrix[0],  c1  = matrix[1],  c2  = matrix[2],  c3  = matrix[3],
@@ -31,6 +34,16 @@ function projectVertices(X, Y, Z, x ,y ,z) {
 
 
 self.onmessage = function (event) {
+	// FU@#.$ IE
+	if(event.data === 'Do not use transferrable') {
+		useTransferrable = false;
+		return;
+	}
+	// FU@#.$ Opera
+	if(event.data.length === 16) {
+		// reset frame transfer
+		state = 3;
+	}
 	switch(state) {
 		case 0 :
 			X = new Float32Array(event.data);
@@ -63,9 +76,16 @@ self.onmessage = function (event) {
 				projectVertices(X, Y, Z, x ,y ,z);
 			}
 			// Tranfer ownership back.
-			if(x.length) postMessage(x.buffer, [x.buffer]);
-			if(y.length) postMessage(y.buffer, [y.buffer]);
-			if(z.length) postMessage(z.buffer, [z.buffer]);
+			if(useTransferrable) {
+				if(x.length) postMessage(x.buffer, [x.buffer]);
+				if(y.length) postMessage(y.buffer, [y.buffer]);
+				if(z.length) postMessage(z.buffer, [z.buffer]);
+			}
+			else {
+				if(x.length) postMessage(x.buffer);
+				if(y.length) postMessage(y.buffer);
+				if(z.length) postMessage(z.buffer);
+			}
 			break;
 	}
 };
