@@ -1,4 +1,6 @@
-"use strict";
+
+/* jshint node: true */
+/* global define */
 
 //https://github.com/umdjs/umd/blob/master/commonjsStrictGlobal.js
 (function (root, factory) {
@@ -15,3 +17,4 @@
         factory(root.VPTreeFactory = {});
     }
 }(this, function (exports) {
+    "use strict";

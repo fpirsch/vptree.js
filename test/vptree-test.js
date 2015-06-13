@@ -1,9 +1,11 @@
-/*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
- *║                                                                                                         ║
- *║      VPTree test-suite.                                                                                 ║
- *║                                                                                                         ║
- *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+/*╔═════════════════════════════════════════════════════════════════════╗
+ *║                                                                     ║
+ *║      VPTree test-suite.                                             ║
+ *║                                                                     ║
+ *╚═════════════════════════════════════════════════════════════════════╝
  */
+/* global VPTreeFactory */
+/* jshint browser: true, qunit: true */
 
 (function() {
 	var gridSize = 10,
@@ -49,8 +51,10 @@
 
 		// VPTreeFactory.load
 		var stringified, stringifiedb;
-		eval('stringified = '+vptree.stringify());
+        /* jshint evil: true */
+		eval('stringified = '+vptree.stringify());    // not valid JSON (no quotes to save space)
 		eval('stringifiedb = '+vptreeb.stringify());
+        /* jshint evil: false */
 		vptree2 = VPTreeFactory.load(S, EUCLIDEAN2, stringified);
 		vptreeb2 = VPTreeFactory.load(S, EUCLIDEAN2, stringifiedb);
 	}
@@ -72,7 +76,6 @@
 
 	// Search the nearest element to one that is known not to be present in the set.
 	function searchNearestOne(vptree) {
-		var result;
 		for(var i = 0, n = S.length; i < n; i++) {
 			var point = S[i],
 				x = point[0],
@@ -163,6 +166,19 @@
 		}
 	}
 
+    function searchByDistance(vptree) {
+        var result = vptree.search([1.1, 0.9], Infinity, 2);
+        equal(result.length, 10);
+        equal(result[0].i, 11);
+        equal(result[9].i, 31);
+        result = vptree.search([5.4, 3.2], Infinity, 1);
+        equal(result.length, 4);
+        equal(result[0].i, 53);
+        equal(result[1].i, 63);
+        equal(result[2].i, 54);
+        equal(result[3].i, 64);
+    }
+    
 	// Tests that stringify() output is correct for small buckets.
 	// Which is totally useless. But should work all the same.
 	function stringifyTest() {
@@ -180,13 +196,15 @@
 		searchNearestOne: function() { searchNearestOne(vptree); },
 		searchNearestTwo: function() { searchNearestTwo(vptree); },
 		searchNearestThree: function() { searchNearestThree(vptree); },
+        searchByDistance: function() { searchByDistance(vptree); },
 
 		// Initially built vptree, buckets of 5 elements
 		searchElementsB: function() { searchElements(vptreeb); },
 		searchNearestOneB: function() { searchNearestOne(vptreeb); },
 		searchNearestTwoB: function() { searchNearestTwo(vptreeb); },
 		searchNearestThreeB: function() { searchNearestThree(vptreeb); },
-
+        searchByDistanceB: function() { searchByDistance(vptreeb); },
+        
 		// Stringify
 		stringifyTest: stringifyTest,
 
@@ -201,5 +219,5 @@
 		searchNearestOneBS: function() { searchNearestOne(vptreeb2); },
 		searchNearestTwoBS: function() { searchNearestTwo(vptreeb2); },
 		searchNearestThreeBS: function() { searchNearestThree(vptreeb2); }
-	}
+	};
 }());

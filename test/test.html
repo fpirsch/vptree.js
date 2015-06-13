@@ -29,12 +29,14 @@
 	test("Find 1 nearest element", searchTest.searchNearestOne);
 	test("Find 2 nearest elements", searchTest.searchNearestTwo);
 	test("Find 3 nearest elements", searchTest.searchNearestThree);
+	test("Find elements by distance", searchTest.searchByDistance);
 
 	module("Search test, bucket size = 5");
 	test("Find existing elements", searchTest.searchElementsB);
 	test("Find 1 nearest element", searchTest.searchNearestOneB);
 	test("Find 2 nearest elements", searchTest.searchNearestTwoB);
 	test("Find 3 nearest elements", searchTest.searchNearestThreeB);
+	test("Find elements by distance", searchTest.searchByDistanceB);
 
 	module("stringify/load test");
 	test("stringify output with buckets smaller thant dataset", searchTest.stringifyTest);

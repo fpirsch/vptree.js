@@ -1,3 +1,4 @@
+    /* global VPTree, exports */
 
 	/*───────────────────────────────────────────────────────────────────────────┐
 	 │   Selection/partition algorithm                                           │
@@ -27,9 +28,9 @@
 	// according to comparator comp.
 	function medianOf3(list, a, b, c, comp) {
 		var A = list[a], B = list[b], C = list[c];
-		return comp (A, B)
-			? comp (B, C) ? b : comp (A, C) ? c : a
-			: comp (A, C) ? a : comp (B, C) ? c : b;
+		return comp (A, B) ?
+            comp (B, C) ? b : comp (A, C) ? c : a :
+			comp (A, C) ? a : comp (B, C) ? c : b;
 	}
 
 	/**
@@ -92,7 +93,7 @@
 		return Math.floor(Math.random() * list.length);
 	}
 
-	var distanceComparator = function(a, b) { return a.dist < b.dist; }
+	var distanceComparator = function(a, b) { return a.dist < b.dist; };
 
 	/**
 	 * Builds and returns a vp-tree from the list S.
@@ -108,7 +109,7 @@
 				i: i
 				//hist: []		// unused (yet)
 			};
-		};
+		}
 
 		var tree = recurseVPTree(S, list, distance, nb);
 		return new VPTree(S, distance, tree);
@@ -116,12 +117,13 @@
 
 	function recurseVPTree(S, list, distance, nb) {
 		if(list.length === 0) return null;
+        var i;
 
 		// Is this a leaf node ?
 		var listLength = list.length;
 		if(nb > 0 && listLength <= nb) {
 			var bucket = [];
-			for(var i = 0; i < listLength; i++) {
+			for(i = 0; i < listLength; i++) {
 				bucket[i] = list[i].i;
 			}
 			return bucket;
@@ -142,9 +144,8 @@
 		var vp = S[node.i],
 			dmin = Infinity,
 			dmax = 0,
-			item,
-			dist;
-		for(var i = 0, n = listLength; i < n; i++) {
+			item, dist, n;
+		for(i = 0, n = listLength; i < n; i++) {
 			item = list[i];
 			dist = distance(vp, S[item.i]);
 			item.dist = dist;
@@ -173,6 +174,7 @@
 	 *  JSON without the null nodes and the quotes around object keys, to save space.
 	 */
 	function stringify(root) {
+        /* jshint validthis: true */
 		var stack = [root || this.tree], s = '';
 		while(stack.length) {
 			var node = stack.pop();

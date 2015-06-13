@@ -24,4 +24,4 @@
 
 	exports.load = function(S, distance, tree) {
 		return new VPTree(S, distance, tree);
-	}
+	};

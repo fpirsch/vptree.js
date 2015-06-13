@@ -52,7 +52,7 @@
 						contents.length--;
 					}
 				}
-				return contents.length === size ? contents[contents.length-1].priority : Infinity;
+				return contents.length === size ? contents[contents.length-1].priority : undefined;
 			},
 
 			list: function() {
@@ -61,7 +61,7 @@
 		};
 
 		return api;
-	};
+	}
 
 
 	/*───────────────────────────────────────────────────────────────────────────┐
@@ -69,17 +69,18 @@
 	 └───────────────────────────────────────────────────────────────────────────*/
 
 	/**
-	 * @param {Object} q query : any object the distance function can be applied to.
-	 * @param {number} n number of nearest neighbors to find (default = 1)
+	 * @param {object} q - query : any object the distance function can be applied to.
+	 * @param {number} [n=1] - number of nearest neighbors to find
+	 * @param {number} [τ=∞] - maximum distance from element q
 	 *
-	 * @return {Array<Object>} list of search results, ordered by increasing distance to the query object.
+	 * @return {Array<object>} list of search results, ordered by increasing distance to the query object.
 	 *						Each result has a property i which is the index of the element in S, and d which
 	 *						is its distance to the query object.
 	 */
-	function searchVPTree(q, n) {
-		n = n || 1;
-		var W = new PriorityQueue(n),
-			τ = Infinity,
+	function searchVPTree(q, n, τ) {
+        /* jshint validthis: true */
+		τ = τ || Infinity;
+		var W = new PriorityQueue(n || 1),
 			S = this.S,
 			distance = this.distance,
 			comparisons = 0;
@@ -95,7 +96,7 @@
 						element = S[elementID],
 						elementDist = distance(q, element);
 					if(elementDist < τ) {
-						τ = W.insert(elementID, elementDist);
+						τ = W.insert(elementID, elementDist) || τ;
 					}
 				}
 				return;
@@ -110,7 +111,7 @@
 
 			// This vantage-point is close enough to q.
 			if(dist < τ) {
-				τ = W.insert(id, dist);
+				τ = W.insert(id, dist) || τ;
 			}
 
 			// The order of exploration is determined by comparison with μ.

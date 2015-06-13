@@ -1,16 +1,18 @@
 /*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
  *║                                                                                                         ║
- *║      vptree.js v0.1.1                                                                                   ║
+ *║      vptree.js v0.2                                                                                   ║
  *║      https://github.com/fpirsch/vptree.js                                                               ║
  *║                                                                                                         ║
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2013-09-21T20:03Z                                                                            ║
+ *║      Date: 2015-06-13T12:28Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
-"use strict";
+
+/* jshint node: true */
+/* global define */
 
 //https://github.com/umdjs/umd/blob/master/commonjsStrictGlobal.js
 (function (root, factory) {
@@ -27,6 +29,8 @@
         factory(root.VPTreeFactory = {});
     }
 }(this, function (exports) {
+    "use strict";
+    /* global VPTree, exports */
 
 	/*───────────────────────────────────────────────────────────────────────────┐
 	 │   Selection/partition algorithm                                           │
@@ -56,9 +60,9 @@
 	// according to comparator comp.
 	function medianOf3(list, a, b, c, comp) {
 		var A = list[a], B = list[b], C = list[c];
-		return comp (A, B)
-			? comp (B, C) ? b : comp (A, C) ? c : a
-			: comp (A, C) ? a : comp (B, C) ? c : b;
+		return comp (A, B) ?
+            comp (B, C) ? b : comp (A, C) ? c : a :
+			comp (A, C) ? a : comp (B, C) ? c : b;
 	}
 
 	/**
@@ -121,7 +125,7 @@
 		return Math.floor(Math.random() * list.length);
 	}
 
-	var distanceComparator = function(a, b) { return a.dist < b.dist; }
+	var distanceComparator = function(a, b) { return a.dist < b.dist; };
 
 	/**
 	 * Builds and returns a vp-tree from the list S.
@@ -137,7 +141,7 @@
 				i: i
 				//hist: []		// unused (yet)
 			};
-		};
+		}
 
 		var tree = recurseVPTree(S, list, distance, nb);
 		return new VPTree(S, distance, tree);
@@ -145,12 +149,13 @@
 
 	function recurseVPTree(S, list, distance, nb) {
 		if(list.length === 0) return null;
+        var i;
 
 		// Is this a leaf node ?
 		var listLength = list.length;
 		if(nb > 0 && listLength <= nb) {
 			var bucket = [];
-			for(var i = 0; i < listLength; i++) {
+			for(i = 0; i < listLength; i++) {
 				bucket[i] = list[i].i;
 			}
 			return bucket;
@@ -171,9 +176,8 @@
 		var vp = S[node.i],
 			dmin = Infinity,
 			dmax = 0,
-			item,
-			dist;
-		for(var i = 0, n = listLength; i < n; i++) {
+			item, dist, n;
+		for(i = 0, n = listLength; i < n; i++) {
 			item = list[i];
 			dist = distance(vp, S[item.i]);
 			item.dist = dist;
@@ -202,6 +206,7 @@
 	 *  JSON without the null nodes and the quotes around object keys, to save space.
 	 */
 	function stringify(root) {
+        /* jshint validthis: true */
 		var stack = [root || this.tree], s = '';
 		while(stack.length) {
 			var node = stack.pop();
@@ -298,7 +303,7 @@
 						contents.length--;
 					}
 				}
-				return contents.length === size ? contents[contents.length-1].priority : Infinity;
+				return contents.length === size ? contents[contents.length-1].priority : undefined;
 			},
 
 			list: function() {
@@ -307,7 +312,7 @@
 		};
 
 		return api;
-	};
+	}
 
 
 	/*───────────────────────────────────────────────────────────────────────────┐
@@ -315,17 +320,18 @@
 	 └───────────────────────────────────────────────────────────────────────────*/
 
 	/**
-	 * @param {Object} q query : any object the distance function can be applied to.
-	 * @param {number} n number of nearest neighbors to find (default = 1)
+	 * @param {object} q - query : any object the distance function can be applied to.
+	 * @param {number} [n=1] - number of nearest neighbors to find
+	 * @param {number} [τ=∞] - maximum distance from element q
 	 *
-	 * @return {Array<Object>} list of search results, ordered by increasing distance to the query object.
+	 * @return {Array<object>} list of search results, ordered by increasing distance to the query object.
 	 *						Each result has a property i which is the index of the element in S, and d which
 	 *						is its distance to the query object.
 	 */
-	function searchVPTree(q, n) {
-		n = n || 1;
-		var W = new PriorityQueue(n),
-			τ = Infinity,
+	function searchVPTree(q, n, τ) {
+        /* jshint validthis: true */
+		τ = τ || Infinity;
+		var W = new PriorityQueue(n || 1),
 			S = this.S,
 			distance = this.distance,
 			comparisons = 0;
@@ -341,7 +347,7 @@
 						element = S[elementID],
 						elementDist = distance(q, element);
 					if(elementDist < τ) {
-						τ = W.insert(elementID, elementDist);
+						τ = W.insert(elementID, elementDist) || τ;
 					}
 				}
 				return;
@@ -356,7 +362,7 @@
 
 			// This vantage-point is close enough to q.
 			if(dist < τ) {
-				τ = W.insert(id, dist);
+				τ = W.insert(id, dist) || τ;
 			}
 
 			// The order of exploration is determined by comparison with μ.
@@ -406,5 +412,5 @@
 
 	exports.load = function(S, distance, tree) {
 		return new VPTree(S, distance, tree);
-	}
+	};
 }));

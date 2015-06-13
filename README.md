@@ -61,17 +61,21 @@ You will probably never use this function. However, it is used internally, and e
 
 ### Searching the tree
 
-**vptree.search(element[, n])**
+**vptree.search(element[, n[, dmax]])**
 
 Searches the **n** nearest neighbors of **element** in **S**.
 
 * **element** an object to search in S
 * **n** the number of closest elements to retrieve. Defaults to 1.
+* **dmax** maximum distance from **element** to search. `Infinity` by default.
 
 This function returns the list of the **n** nearest elements found, ordered from the closest to the furthest.
+The list can contain less than **n** elements if **dmax** is limiting.
 Each item in the list is an object with 2 properties :
 * **i** the index of the element in S
 * **d** its distance to the query element
+
+*Tip:* to search all elements within a certain radius, call `vptree.search(element, Infinity, radius)`.
 
 ### Precomputing the tree
 
