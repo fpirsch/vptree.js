@@ -121,7 +121,7 @@
 			if(μ === undefined) return;
 			if(dist < μ) {
 				if(L && node.m - τ < dist) doSearch(L);
-				if(R && μ - τ < dist && dist < node.M + τ) doSearch(R);
+				if(R && μ - τ < dist) doSearch(R);
 			}
 			else {
 				if(R && dist < node.M + τ) doSearch(R);
