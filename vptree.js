@@ -1,12 +1,12 @@
 /*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
  *║                                                                                                         ║
- *║      vptree.js v0.2                                                                                   ║
+ *║      vptree.js v0.2.1                                                                                   ║
  *║      https://github.com/fpirsch/vptree.js                                                               ║
  *║                                                                                                         ║
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2015-06-13T12:28Z                                                                            ║
+ *║      Date: 2015-12-23T22:07Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
@@ -376,7 +376,7 @@
 			}
 			else {
 				if(R && dist < node.M + τ) doSearch(R);
-				if(L && node.m - τ < dist && dist < μ + τ) doSearch(L);
+				if(L && dist < μ + τ) doSearch(L);
 			}
 		}
 

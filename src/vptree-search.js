@@ -125,7 +125,7 @@
 			}
 			else {
 				if(R && dist < node.M + τ) doSearch(R);
-				if(L && node.m - τ < dist && dist < μ + τ) doSearch(L);
+				if(L && dist < μ + τ) doSearch(L);
 			}
 		}
 
