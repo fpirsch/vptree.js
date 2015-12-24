@@ -6,7 +6,7 @@
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2015-12-24T11:35Z                                                                            ║
+ *║      Date: 2015-12-24T11:38Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
@@ -170,7 +170,7 @@
 		list.splice(vpIndex, 1);
 		listLength--;
 		// We can't node.dist yet, so don't show it in the vp-tree output.
-        node = { i: node.i };
+		node = { i: node.i };
 		if (listLength === 0) return node;
 
 		// Adds to each item its distance to the vantage point.
