@@ -1,12 +1,12 @@
 /*╔═════════════════════════════════════════════════════════════════════════════════════════════════════════╗
  *║                                                                                                         ║
- *║      vptree.js v0.2.2                                                                                   ║
+ *║      vptree.js v0.2.3                                                                                   ║
  *║      https://github.com/fpirsch/vptree.js                                                               ║
  *║                                                                                                         ║
  *║      A javascript implementation of the Vantage-Point Tree algorithm                                    ║
  *║      ISC license (http://opensource.org/licenses/ISC). François Pirsch. 2013.                           ║
  *║                                                                                                         ║
- *║      Date: 2015-12-24T11:18Z                                                                            ║
+ *║      Date: 2015-12-24T11:35Z                                                                            ║
  *║                                                                                                         ║
  *╚═════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
@@ -73,11 +73,11 @@
 	 * The funny mix of 0-based and 1-based indexes comes from the C++
 	 * Standard Library function nth_element.
 	 *
-	 * @param {Array} list the list to partition
-	 * @param {int} left index in the list of the first element of the sublist.
-	 * @param {int} right index in the list of the last element of the sublist (inclusive)
-	 * @param {int} nth index, in the range [1, sublist.length] of the elemnt to find.
-	 * @param {function} comp a comparator, i.e. a boolean function accepting two parameters a and b,
+	 * @param {Array} list - the list to partition
+	 * @param {int} left - index in the list of the first element of the sublist.
+	 * @param {int} right - index in the list of the last element of the sublist (inclusive)
+	 * @param {int} nth - index, in the range [1, sublist.length] of the element to find.
+	 * @param {function} comp - a comparator, i.e. a boolean function accepting two parameters a and b,
 	 *        and returning true if a < b and false if a >= b.
 	 *
 	 * See http://en.wikipedia.org/wiki/Quickselect
@@ -109,7 +109,9 @@
 	 * Wrapper around nth_element with a 0-based index.
 	 */
 	function select(list, k, comp) {
-		if (k < 0 || k >= list.length) throw new Error("VPTree.select: k must be in range [0, list.length-1] (k="+k+")");
+		if (k < 0 || k >= list.length) {
+            throw new Error("VPTree.select: k must be in range [0, list.length-1] (k="+k+")");
+        }
 		return nth_element(list, 0, k+1, list.length-1, comp);
 	}
 
@@ -149,7 +151,7 @@
 
 	function recurseVPTree(S, list, distance, nb) {
 		if (list.length === 0) return null;
-        var i;
+		var i;
 
 		// Is this a leaf node ?
 		var listLength = list.length;
@@ -167,8 +169,8 @@
 			node = list[vpIndex];
 		list.splice(vpIndex, 1);
 		listLength--;
-		// We can't use this information yet, so don't show it in the vp-tree output.
-		delete node.dist;
+		// We can't node.dist yet, so don't show it in the vp-tree output.
+        node = { i: node.i };
 		if (listLength === 0) return node;
 
 		// Adds to each item its distance to the vantage point.
@@ -323,9 +325,9 @@
 	 * @param {number} [n=1] - number of nearest neighbors to find
 	 * @param {number} [τ=∞] - maximum distance from element q
 	 *
-	 * @return {Array<object>} list of search results, ordered by increasing distance to the query object.
-	 *						Each result has a property i which is the index of the element in S, and d which
-	 *						is its distance to the query object.
+	 * @return {object[]} list of search results, ordered by increasing distance to the query object.
+	 *                    Each result has a property i which is the index of the element in S, and d which
+	 *                    is its distance to the query object.
 	 */
 	function searchVPTree(q, n, τ) {
 		τ = τ || Infinity;

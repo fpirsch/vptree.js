@@ -73,9 +73,9 @@
 	 * @param {number} [n=1] - number of nearest neighbors to find
 	 * @param {number} [τ=∞] - maximum distance from element q
 	 *
-	 * @return {Array<object>} list of search results, ordered by increasing distance to the query object.
-	 *						Each result has a property i which is the index of the element in S, and d which
-	 *						is its distance to the query object.
+	 * @return {object[]} list of search results, ordered by increasing distance to the query object.
+	 *                    Each result has a property i which is the index of the element in S, and d which
+	 *                    is its distance to the query object.
 	 */
 	function searchVPTree(q, n, τ) {
 		τ = τ || Infinity;
