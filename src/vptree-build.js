@@ -137,7 +137,7 @@
 			node = list[vpIndex];
 		list.splice(vpIndex, 1);
 		listLength--;
-		// We can't node.dist yet, so don't show it in the vp-tree output.
+		// We can't use node.dist yet, so don't show it in the vp-tree output.
 		node = { i: node.i };
 		if (listLength === 0) return node;
 
