@@ -138,7 +138,7 @@
 		list.splice(vpIndex, 1);
 		listLength--;
 		// We can't node.dist yet, so don't show it in the vp-tree output.
-        node = { i: node.i };
+		node = { i: node.i };
 		if (listLength === 0) return node;
 
 		// Adds to each item its distance to the vantage point.
