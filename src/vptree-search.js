@@ -45,10 +45,10 @@
 
 			insert: function(data, priority) {
 				var index = binaryIndexOf(priority);
-				if(index < 0) index = -1 - index;
-				if(index < size) {
+				if (index < 0) index = -1 - index;
+				if (index < size) {
 					contents.splice(index, 0, {data: data, priority: priority});
-					if(contents.length > size) {
+					if (contents.length > size) {
 						contents.length--;
 					}
 				}
@@ -78,7 +78,6 @@
 	 *						is its distance to the query object.
 	 */
 	function searchVPTree(q, n, τ) {
-        /* jshint validthis: true */
 		τ = τ || Infinity;
 		var W = new PriorityQueue(n || 1),
 			S = this.S,
@@ -86,16 +85,16 @@
 			comparisons = 0;
 
 		function doSearch(node) {
-			if(node === null) return;
+			if (node === null) return;
 
 			// Leaf node : test each element in this node's bucket.
-			if(node.length) {
-				for(var i = 0, n = node.length; i < n; i++) {
+			if (node.length) {
+				for (var i = 0, n = node.length; i < n; i++) {
 					comparisons++;
 					var elementID = node[i],
 						element = S[elementID],
 						elementDist = distance(q, element);
-					if(elementDist < τ) {
+					if (elementDist < τ) {
 						τ = W.insert(elementID, elementDist) || τ;
 					}
 				}
@@ -110,22 +109,23 @@
 			comparisons++;
 
 			// This vantage-point is close enough to q.
-			if(dist < τ) {
+			if (dist < τ) {
 				τ = W.insert(id, dist) || τ;
 			}
 
 			// The order of exploration is determined by comparison with μ.
 			// The sooner we find elements close to q, the smaller τ and the more nodes we skip.
 			// P. Yianilos uses the middle of left/right bounds instead of μ.
+			// We search L if dist is in (m - τ, μ + τ), and R if dist is in (μ - τ, M + τ)
 			var μ = node.μ, L = node.L, R = node.R;
-			if(μ === undefined) return;
-			if(dist < μ) {
-				if(L && node.m - τ < dist) doSearch(L);
-				if(R && μ - τ < dist) doSearch(R);
+			if (μ === undefined) return;
+			if (dist < μ) {
+				if (L && node.m - τ < dist) doSearch(L);
+				if (R && μ - τ < dist) doSearch(R);
 			}
 			else {
-				if(R && dist < node.M + τ) doSearch(R);
-				if(L && dist < μ + τ) doSearch(L);
+				if (R && dist < node.M + τ) doSearch(R);
+				if (L && dist < μ + τ) doSearch(L);
 			}
 		}
 
