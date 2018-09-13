@@ -175,39 +175,44 @@
 	/** Stringifies a vp-tree data structure.
 	 *  JSON without the null nodes and the quotes around object keys, to save space.
 	 */
-	function stringify(root) {
-		var stack = [root || this.tree], s = '';
-		while (stack.length) {
-			var node = stack.pop();
-
-			// Happens if the bucket size is greater thant the dataset.
-			if (node.length) return '['+node.join(',')+']';
-
-			s += '{i:' + node.i;
-			if (node.hasOwnProperty('m')) {
-				s += ',m:' + node.m + ',M:' + node.M + ',μ:' + node.μ;
-			}
-			if (node.hasOwnProperty('b')) {
-				s += ',b:[' + node.b + ']';
-			}
-			if (node.hasOwnProperty('L')) {
-				var L = node.L;
-				if (L) {
-					s += ',L:';
-					if (L.length) s += '[' + L + ']';
-					else s += stringify(L);
+	function stringify(root, useJson) {
+		if (useJson === true) {
+			return JSON.stringify(root);
+		} else {
+			var stack = [root || this.tree], s = '';
+			while (stack.length) {
+				var node = stack.pop();
+	
+				// Happens if the bucket size is greater thant the dataset.
+				if (node.length) return '['+node.join(',')+']';
+	
+				s += '{i:' + node.i;
+				if (node.hasOwnProperty('m')) {
+					s += ',m:' + node.m + ',M:' + node.M + ',μ:' + node.μ;
 				}
-			}
-			if (node.hasOwnProperty('R')) {
-				var R = node.R;
-				if (R) {
-					s += ',R:';
-					if (R.length) s += '[' + R + ']';
-					else s += stringify(R);
+				if (node.hasOwnProperty('b')) {
+					s += ',b:[' + node.b + ']';
 				}
+				if (node.hasOwnProperty('L')) {
+					var L = node.L;
+					if (L) {
+						s += ',L:';
+						if (L.length) s += '[' + L + ']';
+						else s += stringify(L);
+					}
+				}
+				if (node.hasOwnProperty('R')) {
+					var R = node.R;
+					if (R) {
+						s += ',R:';
+						if (R.length) s += '[' + R + ']';
+						else s += stringify(R);
+					}
+				}
+				s += '}';
 			}
-			s += '}';
 		}
+		
 		return s;
 	}
 

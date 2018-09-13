@@ -203,6 +203,10 @@
 		return node;
 	}
 
+	function getJson() {
+		return JSON.stringify(this.tree);
+	}
+
 
 	/** Stringifies a vp-tree data structure.
 	 *  JSON without the null nodes and the quotes around object keys, to save space.
@@ -408,6 +412,7 @@
 		this.search = searchVPTree;
 		this.comparisons = 0;
 		this.stringify = stringify;
+		this.getJson = getJson;
 	}
 
 
