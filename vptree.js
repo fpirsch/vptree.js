@@ -417,6 +417,7 @@
 		this.comparisons = 0;
 		this.stringify = stringify;
 		this.getJson = getJson;
+		this.getObject = getObject;
 	}
 
 
