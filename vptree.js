@@ -203,6 +203,10 @@
 		return node;
 	}
 
+	function getObject() {
+		return this.tree
+	}
+
 	function getJson() {
 		return JSON.stringify(this.tree);
 	}
