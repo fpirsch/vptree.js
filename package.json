@@ -1,0 +1,23 @@
+{
+  "name": "vptree",
+  "version": "1.0.0",
+  "description": "A javascript implementation of the Vantage-Point Tree algorithm",
+  "main": "vptree.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RandomStudio/vptree.js.git"
+  },
+  "author": "François Pirsch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RandomStudio/vptree.js/issues"
+  },
+  "homepage": "https://github.com/RandomStudio/vptree.js#readme",
+  "dependencies": {}
+}
