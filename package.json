@@ -1,5 +1,5 @@
 {
-  "name": "vptree",
+  "name": "@randomstudio/vptree",
   "version": "1.0.0",
   "description": "A javascript implementation of the Vantage-Point Tree algorithm",
   "main": "vptree.js",
@@ -19,5 +19,9 @@
     "url": "https://github.com/RandomStudio/vptree.js/issues"
   },
   "homepage": "https://github.com/RandomStudio/vptree.js#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+
 }
